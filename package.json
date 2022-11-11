@@ -1,0 +1,13 @@
+{
+  "name": "sudoku",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel src/html/index.html"
+  },
+  "devDependencies": {
+    "@parcel/transformer-less": "2.8.0",
+    "parcel": "^2.8.0"
+  }
+}
