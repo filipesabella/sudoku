@@ -125,20 +125,14 @@
   }
 
   .numpad {
-    display: none;
-  }
+    display: flex;
+    color: var(--player-number-color);
+    font-size: 3em;
+    justify-content: space-around;
+    user-select: none;
 
-  @media only screen and (max-width: 400px) {
-    .numpad {
-      display: flex;
-      color: var(--player-number-color);
-      font-size: 3em;
-      justify-content: space-around;
-      user-select: none;
-
-      >div {
-        cursor: pointer;
-      }
+    >div {
+      cursor: pointer;
     }
   }
 }
