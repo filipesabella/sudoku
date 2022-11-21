@@ -1,13 +1,19 @@
 {
   "name": "sudoku",
   "version": "1.0.0",
-  "main": "index.js",
+  "author": "Filipe Sabella <me@filipesabella.com>",
   "license": "MIT",
+  "private": true,
   "scripts": {
-    "start": "parcel src/html/index.html"
+    "start": "parcel src/html/index.html",
+    "build": "BASE_PATH=/sudoku parcel build --out-dir docs --public-url ./ src/html/index.html"
   },
   "devDependencies": {
     "@parcel/transformer-less": "2.8.0",
     "parcel": "^2.8.0"
+  },
+  "dependencies": {
+    "@parcel/service-worker": "^2.8.0",
+    "sudoku": "^0.0.3"
   }
 }

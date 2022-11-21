@@ -13,6 +13,14 @@
   <div id="root"></div>
 </body>
 
+<script type="module">
+  navigator &&
+    navigator.serviceWorker &&
+    navigator.serviceWorker.register(
+      new URL('service-worker.js', import.meta.url),
+      { type: 'module' }
+    );
+</script>
 <script src="../main/index.tsx" type="module"></script>
 
 </html>
