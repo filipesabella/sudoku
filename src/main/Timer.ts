@@ -1,8 +1,10 @@
 // barf
+let interval = -1;
 export class Timer {
   static start(): void {
     let ellapsed = 0;
-    window.setInterval(() => {
+    window.clearInterval(interval);
+    interval = window.setInterval(() => {
       if (!document.hidden) {
         ellapsed += 1;
         document.getElementById('timer')!.innerHTML =
