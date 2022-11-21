@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "start": "parcel src/html/index.html",
-    "build": "BASE_PATH=/sudoku parcel build --out-dir docs --public-url ./ src/html/index.html"
+    "build": "BASE_PATH=/sudoku parcel build --dist-dir docs --public-url ./ src/html/index.html"
   },
   "devDependencies": {
     "@parcel/transformer-less": "2.8.0",
