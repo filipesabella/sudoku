@@ -80,6 +80,10 @@ export class Game {
   selectedCell(): Cell | null {
     return this.cells.find(c => c.selected) || null;
   }
+
+  hasBeenPlayed(): boolean {
+    return !!this.cells.find(c => c.playerValue !== null);
+  }
 }
 
 // when placing a number on a cell, clear up placeholders with that
