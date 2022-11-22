@@ -286,9 +286,13 @@ const undo = () => {
 }
 
 const reload = () => {
-  game = newGame();
-  initialRender(game);
-  renderGame(game);
+  // avoid accidental taps
+  const hasBeenPlayed = game.hasBeenPlayed();
+  if (!hasBeenPlayed || confirm('Are you sure?')) {
+    game = newGame();
+    initialRender(game);
+    renderGame(game);
+  }
 }
 
 initialRender(game);
