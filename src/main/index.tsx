@@ -291,8 +291,8 @@ const undo = () => {
 
 const reload = () => {
   // avoid accidental taps
-  const shouldConfirm = !game.won || game.hasBeenPlayed();
-  if (shouldConfirm || confirm('Are you sure?')) {
+  const shouldNotConfirm = game.won || !game.hasBeenPlayed();
+  if (shouldNotConfirm || confirm('Are you sure?')) {
     game = newGame();
     initialRender(game);
     renderGame(game);
