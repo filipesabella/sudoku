@@ -8,6 +8,7 @@
   --invalid-color: hsl(350, 71%, 89%);
   --player-number-color: hsl(210, 100%, 45%);
   --text-color: hsl(213, 30%, 29%);
+  --win-color: hsl(110, 44%, 63%);
 
   // this is initialised with javascript
   --cell-size: -1px;
@@ -41,6 +42,14 @@
     border: var(--thick-border) solid var(--thick-border-color);
     border-collapse: collapse;
     user-select: none;
+
+    &.win {
+      --thin-border-color: var(--win-color);
+      --thick-border-color: var(--win-color);
+      --invalid-color: var(--win-color);
+      --player-number-color: var(--win-color);
+      --text-color: var(--win-color);
+    }
 
     .cell {
       width: var(--cell-size);
