@@ -52,6 +52,10 @@ function boardContainer(game: Game): HTMLElement {
   const board = document.createElement('table');
   board.className = 'board';
 
+  if (game.won) {
+    board.classList.add('win');
+  }
+
   const selectedCell = game.selectedCell();
 
   const rows = game.cells.reduce((trs, cell, index) => {
@@ -213,7 +217,7 @@ function newGame(): Game {
 
   const cells = solved.map((n, i) =>
     new Cell(i, n, puzzle[i] !== null, null, null));
-  return new Game(cells, false, difficulty, []);
+  return new Game(false, cells, false, difficulty, []);
 }
 
 let game = newGame();
@@ -287,8 +291,8 @@ const undo = () => {
 
 const reload = () => {
   // avoid accidental taps
-  const hasBeenPlayed = game.hasBeenPlayed();
-  if (!hasBeenPlayed || confirm('Are you sure?')) {
+  const shouldConfirm = !game.won || game.hasBeenPlayed();
+  if (shouldConfirm || confirm('Are you sure?')) {
     game = newGame();
     initialRender(game);
     renderGame(game);

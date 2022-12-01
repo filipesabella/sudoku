@@ -5,6 +5,7 @@ export type Placeholders = ImmutableSet<ValidNumber>;
 
 export class Game {
   constructor(
+    readonly won: boolean,
     readonly cells: Cell[],
     readonly placeholderMode: boolean,
     readonly difficulty: number,
@@ -13,6 +14,7 @@ export class Game {
   toggleSelectedCell(row: number, col: number): Game {
     const index = --row * 9 + --col;
     return new Game(
+      this.won,
       this.cells.map((c, i) => i === index
         ? c.toggleSelected()
         : c.deselect()),
@@ -31,18 +33,12 @@ export class Game {
         this.cells.map(c => c.numberPressed(n, this.placeholderMode))
       ));
 
-    const allFilledUp = !cells.find(c => !c.revealed && !c.playerValue);
-
-    if (allFilledUp) {
-      const allCellsValid = !cells.find(c => !c.valid);
-      if (allCellsValid) {
-        alert('win');
-      } else {
-        alert('no');
-      }
-    }
+    const allFilledUp = () => !cells.find(c => !c.revealed && !c.playerValue);
+    const allCellsValid = () => !cells.find(c => !c.valid);
+    const won = allFilledUp() && allCellsValid();
 
     return new Game(
+      won,
       cells,
       this.placeholderMode,
       this.difficulty,
@@ -52,6 +48,7 @@ export class Game {
 
   eraseSelected(): Game {
     return new Game(
+      this.won,
       this.cells.map(c => c.selected ? c.erase() : c),
       this.placeholderMode,
       this.difficulty,
@@ -61,6 +58,7 @@ export class Game {
 
   togglePlaceholderMode(): Game {
     return new Game(
+      this.won,
       this.cells,
       !this.placeholderMode,
       this.difficulty,
