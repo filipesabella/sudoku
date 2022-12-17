@@ -58,6 +58,10 @@ function boardContainer(game: Game): HTMLElement {
 
   const selectedCell = game.selectedCell();
 
+  if (selectedCell && selectedCell.shownNumber()) {
+    board.classList.add('selected-' + selectedCell.shownNumber());
+  }
+
   const rows = game.cells.reduce((trs, cell, index) => {
     const rowIndex = Math.floor(index / 9) + 1;
     const colIndex = Math.floor(index % 9) + 1;
@@ -67,6 +71,10 @@ function boardContainer(game: Game): HTMLElement {
     cellContainer.dataset.row = String(rowIndex);
     cellContainer.dataset.col = String(colIndex);
 
+    if (cell.shownNumber()) {
+      cellContainer.classList.add('number-' + cell.shownNumber());
+    }
+
     // when a cell is selected, highlight the row a column
     if (selectedCell &&
       (
@@ -74,14 +82,6 @@ function boardContainer(game: Game): HTMLElement {
         colIndex === selectedCell.columnIndex()
       )) {
       cellContainer.classList.add('highlighted');
-    }
-
-    // when a number is selected, highlight all the instances of the same number
-    if (selectedCell &&
-      cell !== selectedCell &&
-      cell.shownNumber() &&
-      cell.shownNumber() === selectedCell.shownNumber()) {
-      cellContainer.classList.add('sibling-selected');
     }
 
     if (cell.valid === false) {
@@ -103,6 +103,7 @@ function boardContainer(game: Game): HTMLElement {
         const placeholderContainer = document.createElement('div');
         placeholderContainer.style.gridArea = 'a' + String(p);
         placeholderContainer.innerHTML = String(p);
+        placeholderContainer.classList.add('number-' + p);
         placeholdersContainer.appendChild(placeholderContainer);
       })
       cellContainer.appendChild(placeholdersContainer);
