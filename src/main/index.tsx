@@ -263,6 +263,9 @@ document.onkeyup = e => {
     togglePlaceholderMode();
   } else if (e.key === 'c') {
     erase();
+  } else if (e.key === 'v') {
+    console.log(game.cells
+      .map(c => c.revealed ? c.realValue : c.playerValue || 0).join(''));
   }
 };
 
