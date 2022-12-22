@@ -6,13 +6,8 @@ export type Placeholders = ImmutableSet<ValidNumber>;
 const validNumbers: ValidNumber[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export class Game {
-  constructor(
-    readonly won: boolean,
-    readonly cells: Cell[],
-    readonly placeholderMode: boolean,
-    readonly difficulty: number,
-    readonly previousStates: Game[]) {
-    this.cells = cells.map(cell => {
+  static newGame(cells: Cell[], difficulty: number): Game {
+    const cellsWithPlaceholdes = cells.map(cell => {
       const neighbours = new Set(cells
         .filter(c => cell !== c
           && c.revealed && c.realValue
@@ -25,7 +20,15 @@ export class Game {
       return cell.populatePlaceholders(new ImmutableSet(placeholders));
     });
 
+    return new Game(false, cellsWithPlaceholdes, false, difficulty, []);
   }
+
+  constructor(
+    readonly won: boolean,
+    readonly cells: Cell[],
+    readonly placeholderMode: boolean,
+    readonly difficulty: number,
+    readonly previousStates: Game[]) {}
 
   toggleSelectedCell(row: number, col: number): Game {
     const index = --row * 9 + --col;
