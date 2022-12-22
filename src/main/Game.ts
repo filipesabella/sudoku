@@ -3,13 +3,29 @@ import { ImmutableSet } from "./ImmutableSet";
 export type ValidNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 export type Placeholders = ImmutableSet<ValidNumber>;
 
+const validNumbers: ValidNumber[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
 export class Game {
   constructor(
     readonly won: boolean,
     readonly cells: Cell[],
     readonly placeholderMode: boolean,
     readonly difficulty: number,
-    readonly previousStates: Game[]) { }
+    readonly previousStates: Game[]) {
+    this.cells = cells.map(cell => {
+      const neighbours = new Set(cells
+        .filter(c => cell !== c
+          && c.revealed && c.realValue
+          && isRelevant(cell, c))
+        .map(c => c.realValue));
+
+      const placeholders = validNumbers.filter(
+        n => !neighbours.has(n as ValidNumber))
+
+      return cell.populatePlaceholders(new ImmutableSet(placeholders));
+    });
+
+  }
 
   toggleSelectedCell(row: number, col: number): Game {
     const index = --row * 9 + --col;
@@ -162,6 +178,16 @@ export class Cell {
 
   deselect(): Cell {
     return this.selected ? this.toggleSelected() : this;
+  }
+
+  populatePlaceholders(placeholders: Placeholders): Cell {
+    return new Cell(
+      this.index,
+      this.realValue,
+      this.revealed,
+      null,
+      placeholders,
+      this.selected);
   }
 
   numberPressed(n: ValidNumber, placeholderMode: boolean): Cell {
