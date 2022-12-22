@@ -218,7 +218,8 @@ function newGame(): Game {
 
   const cells = solved.map((n, i) =>
     new Cell(i, n, puzzle[i] !== null, null, null));
-  return new Game(false, cells, false, difficulty, []);
+
+  return Game.newGame(cells, difficulty);
 }
 
 let game = newGame();
