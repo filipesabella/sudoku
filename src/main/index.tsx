@@ -231,11 +231,14 @@ document.onclick = e => {
       : e.parentElement
         ? findCell(e.parentElement, selector)
         : null;
+console.log(e.target);
 
   const cell = findCell(e.target as HTMLElement, 'cell');
   if (cell) {
     const { row, col } = cell.dataset;
     toggleSelectedCell(parseInt(row!), parseInt(col!));
+  } else if ((e.target as HTMLDivElement).id === 'root') {
+    togglePlaceholderMode();
   }
 };
 
