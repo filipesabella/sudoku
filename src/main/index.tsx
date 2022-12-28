@@ -231,7 +231,6 @@ document.onclick = e => {
       : e.parentElement
         ? findCell(e.parentElement, selector)
         : null;
-console.log(e.target);
 
   const cell = findCell(e.target as HTMLElement, 'cell');
   if (cell) {
