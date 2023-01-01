@@ -29,7 +29,7 @@ export class Game {
     readonly placeholderMode: boolean,
     readonly difficulty: number,
     readonly previousStates: Game[],
-    readonly hasMessedUpPreviousPlacement: boolean) { }
+    readonly messedUp: boolean) { }
 
   toggleSelectedCell(row: number, col: number): Game {
     const index = --row * 9 + --col;
@@ -41,7 +41,7 @@ export class Game {
       this.placeholderMode,
       this.difficulty,
       this.previousStates,
-      this.hasMessedUpPreviousPlacement,
+      this.messedUp,
     );
   }
 
@@ -58,12 +58,18 @@ export class Game {
     const allCellsValid = () => !cells.find(c => !c.valid);
     const won = allFilledUp() && allCellsValid();
 
-    if (this.hasMessedUpPreviousPlacement) {
+    if (this.messedUp) {
       alert('Messed up');
     }
 
-    const hasMessedUpPreviousPlacement = this.hasMessedUpPreviousPlacement
-      || cells.find(c => c.selected)!.isWrong();
+    // we consider the player to have messed up if they placed a wrong number
+    // and then continue the game. We don't want to invalidate the game
+    // immediatelly upon making a mistake as the player might have simply
+    // pressed the wrong button. So the code below checks if there's a `isWrong`
+    // cell that is not the currently selected cell.
+    const hasMessedUp = !!cells
+      .filter(c => !c.selected)
+      .find(c => c.isWrong());
 
     return new Game(
       won,
@@ -71,7 +77,7 @@ export class Game {
       this.placeholderMode,
       this.difficulty,
       this.previousStates.concat(this),
-      hasMessedUpPreviousPlacement,
+      hasMessedUp,
     );
   }
 
@@ -82,7 +88,7 @@ export class Game {
       this.placeholderMode,
       this.difficulty,
       this.previousStates.concat(this),
-      this.hasMessedUpPreviousPlacement,
+      this.messedUp,
     );
   }
 
@@ -93,7 +99,7 @@ export class Game {
       !this.placeholderMode,
       this.difficulty,
       this.previousStates,
-      this.hasMessedUpPreviousPlacement,
+      this.messedUp,
     );
   }
 

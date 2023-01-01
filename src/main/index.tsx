@@ -56,6 +56,10 @@ function boardContainer(game: Game): HTMLElement {
     board.classList.add('win');
   }
 
+  if (game.messedUp) {
+    alert('Messed up');
+  }
+
   const selectedCell = game.selectedCell();
 
   if (selectedCell && selectedCell.shownNumber()) {
