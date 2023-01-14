@@ -42,16 +42,19 @@ export class Game {
       this.difficulty,
       this.previousStates,
       this.messedUp,
+      null, // clear up previously pressed number when switching cells
     );
   }
 
-  numberPressed(n: ValidNumber): Game {
+  numberPressed(n: ValidNumber, placeholderModeOverride: boolean): Game {
     if (!this.selectedCell()) return this;
 
     const cells = validate(
       clearUpPlaceholders(
         this.placeholderMode,
-        this.cells.map(c => c.numberPressed(n, this.placeholderMode))
+        this.cells.map(c => c.numberPressed(
+          n,
+          placeholderModeOverride || this.placeholderMode))
       ));
 
     const allFilledUp = () => !cells.find(c => !c.revealed && !c.playerValue);
