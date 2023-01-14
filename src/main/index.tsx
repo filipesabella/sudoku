@@ -245,9 +245,17 @@ document.onclick = e => {
   }
 };
 
+let isXDown = false;
+
+document.onkeydown = e => {
+  if (e.key === 'x') {
+    isXDown = true;
+  }
+}
+
 document.onkeyup = e => {
   if (e.key.match(/[1-9]/)) {
-    numberPressed(parseInt(e.key) as ValidNumber, e.altKey);
+    numberPressed(parseInt(e.key) as ValidNumber, isXDown);
   } else if (e.key.match(/^(1|2|3|q|w|e|a|s|d)$/) && !e.ctrlKey) {
     const m: { [key: string]: ValidNumber } = {
       '1': 1,
@@ -263,11 +271,11 @@ document.onkeyup = e => {
 
     const n = m[e.key];
 
-    m && numberPressed(n, e.altKey);
+    m && numberPressed(n, isXDown);
   } else if (e.key === 'z') {
     undo();
   } else if (e.key === 'x') {
-    togglePlaceholderMode();
+    isXDown = false;
   } else if (e.key === 'c') {
     erase();
   } else if (e.key === 'v') {
