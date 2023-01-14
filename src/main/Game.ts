@@ -20,7 +20,14 @@ export class Game {
       return cell.populatePlaceholders(new ImmutableSet(placeholders));
     });
 
-    return new Game(false, cellsWithPlaceholdes, false, difficulty, [], false);
+    return new Game(
+      false,
+      cellsWithPlaceholdes,
+      false,
+      difficulty,
+      [],
+      false,
+      null,);
   }
 
   constructor(
@@ -29,7 +36,8 @@ export class Game {
     readonly placeholderMode: boolean,
     readonly difficulty: number,
     readonly previousStates: Game[],
-    readonly messedUp: boolean) { }
+    readonly messedUp: boolean,
+    readonly previouslyPressedNumber: ValidNumber | null) { }
 
   toggleSelectedCell(row: number, col: number): Game {
     const index = --row * 9 + --col;
@@ -81,6 +89,7 @@ export class Game {
       this.difficulty,
       this.previousStates.concat(this),
       hasMessedUp,
+      n,
     );
   }
 
@@ -92,6 +101,7 @@ export class Game {
       this.difficulty,
       this.previousStates.concat(this),
       this.messedUp,
+      this.previouslyPressedNumber,
     );
   }
 
@@ -103,6 +113,7 @@ export class Game {
       this.difficulty,
       this.previousStates,
       this.messedUp,
+      this.previouslyPressedNumber,
     );
   }
 

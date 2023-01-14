@@ -62,8 +62,12 @@ function boardContainer(game: Game): HTMLElement {
 
   const selectedCell = game.selectedCell();
 
-  if (selectedCell && selectedCell.shownNumber()) {
-    board.classList.add('selected-' + selectedCell.shownNumber());
+  if (selectedCell) {
+    if (selectedCell.shownNumber()) {
+      board.classList.add('selected-' + selectedCell.shownNumber());
+    } else if (!selectedCell.shownNumber() && game.previouslyPressedNumber) {
+      board.classList.add('selected-' + game.previouslyPressedNumber);
+    }
   }
 
   const rows = game.cells.reduce((trs, cell, index) => {
