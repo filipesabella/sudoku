@@ -69,10 +69,6 @@ export class Game {
     const allCellsValid = () => !cells.find(c => !c.valid);
     const won = allFilledUp() && allCellsValid();
 
-    if (this.messedUp) {
-      alert('Messed up');
-    }
-
     // we consider the player to have messed up if they placed a wrong number
     // and then continue the game. We don't want to invalidate the game
     // immediatelly upon making a mistake as the player might have simply
