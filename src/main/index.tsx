@@ -62,8 +62,12 @@ function boardContainer(game: Game): HTMLElement {
 
   const selectedCell = game.selectedCell();
 
-  if (selectedCell && selectedCell.shownNumber()) {
-    board.classList.add('selected-' + selectedCell.shownNumber());
+  if (selectedCell) {
+    if (selectedCell.shownNumber()) {
+      board.classList.add('selected-' + selectedCell.shownNumber());
+    } else if (!selectedCell.shownNumber() && game.previouslyPressedNumber) {
+      board.classList.add('selected-' + game.previouslyPressedNumber);
+    }
   }
 
   const rows = game.cells.reduce((trs, cell, index) => {
@@ -195,7 +199,7 @@ function numpadContainer() {
   [1, 2, 3, 4, 5, 6, 7, 8, 9].forEach(n => {
     const numContainer = document.createElement('div');
     numContainer.innerHTML = String(n);
-    numContainer.onclick = () => numberPressed(n as ValidNumber);
+    numContainer.onclick = () => numberPressed(n as ValidNumber, false);
     container.appendChild(numContainer);
   });
 
@@ -229,7 +233,7 @@ function newGame(): Game {
 let game = newGame();
 
 document.onclick = e => {
-  const findCell = (e: HTMLElement, selector: string) =>
+  const findCell = (e: HTMLElement, selector: string): HTMLElement | null =>
     e.classList.contains('cell') && e.tagName === 'TD'
       ? e
       : e.parentElement
@@ -245,9 +249,17 @@ document.onclick = e => {
   }
 };
 
+let isXDown = false;
+
+document.onkeydown = e => {
+  if (e.key === 'x') {
+    isXDown = true;
+  }
+}
+
 document.onkeyup = e => {
   if (e.key.match(/[1-9]/)) {
-    numberPressed(parseInt(e.key) as ValidNumber);
+    numberPressed(parseInt(e.key) as ValidNumber, isXDown);
   } else if (e.key.match(/^(1|2|3|q|w|e|a|s|d)$/) && !e.ctrlKey) {
     const m: { [key: string]: ValidNumber } = {
       '1': 1,
@@ -262,11 +274,12 @@ document.onkeyup = e => {
     };
 
     const n = m[e.key];
-    m && numberPressed(n);
+
+    m && numberPressed(n, isXDown);
   } else if (e.key === 'z') {
     undo();
   } else if (e.key === 'x') {
-    togglePlaceholderMode();
+    isXDown = false;
   } else if (e.key === 'c') {
     erase();
   } else if (e.key === 'v') {
@@ -275,8 +288,8 @@ document.onkeyup = e => {
   }
 };
 
-const numberPressed = (n: ValidNumber) => {
-  game = game.numberPressed(n);
+const numberPressed = (n: ValidNumber, placeholderModeOverride: boolean) => {
+  game = game.numberPressed(n, placeholderModeOverride);
   renderGame(game);
 };
 

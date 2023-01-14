@@ -20,7 +20,14 @@ export class Game {
       return cell.populatePlaceholders(new ImmutableSet(placeholders));
     });
 
-    return new Game(false, cellsWithPlaceholdes, false, difficulty, [], false);
+    return new Game(
+      false,
+      cellsWithPlaceholdes,
+      false,
+      difficulty,
+      [],
+      false,
+      null,);
   }
 
   constructor(
@@ -29,7 +36,8 @@ export class Game {
     readonly placeholderMode: boolean,
     readonly difficulty: number,
     readonly previousStates: Game[],
-    readonly messedUp: boolean) { }
+    readonly messedUp: boolean,
+    readonly previouslyPressedNumber: ValidNumber | null) { }
 
   toggleSelectedCell(row: number, col: number): Game {
     const index = --row * 9 + --col;
@@ -42,16 +50,19 @@ export class Game {
       this.difficulty,
       this.previousStates,
       this.messedUp,
+      null, // clear up previously pressed number when switching cells
     );
   }
 
-  numberPressed(n: ValidNumber): Game {
+  numberPressed(n: ValidNumber, placeholderModeOverride: boolean): Game {
     if (!this.selectedCell()) return this;
 
     const cells = validate(
       clearUpPlaceholders(
         this.placeholderMode,
-        this.cells.map(c => c.numberPressed(n, this.placeholderMode))
+        this.cells.map(c => c.numberPressed(
+          n,
+          placeholderModeOverride || this.placeholderMode))
       ));
 
     const allFilledUp = () => !cells.find(c => !c.revealed && !c.playerValue);
@@ -78,6 +89,7 @@ export class Game {
       this.difficulty,
       this.previousStates.concat(this),
       hasMessedUp,
+      n,
     );
   }
 
@@ -89,6 +101,7 @@ export class Game {
       this.difficulty,
       this.previousStates.concat(this),
       this.messedUp,
+      this.previouslyPressedNumber,
     );
   }
 
@@ -100,6 +113,7 @@ export class Game {
       this.difficulty,
       this.previousStates,
       this.messedUp,
+      this.previouslyPressedNumber,
     );
   }
 
