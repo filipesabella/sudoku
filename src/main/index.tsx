@@ -229,7 +229,7 @@ function newGame(): Game {
 let game = newGame();
 
 document.onclick = e => {
-  const findCell = (e: HTMLElement, selector: string) =>
+  const findCell = (e: HTMLElement, selector: string): HTMLElement | null =>
     e.classList.contains('cell') && e.tagName === 'TD'
       ? e
       : e.parentElement
