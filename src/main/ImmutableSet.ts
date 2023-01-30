@@ -1,5 +1,9 @@
 export class ImmutableSet<T> {
-  constructor(private readonly data: T[]) { }
+  readonly length: number;
+
+  constructor(private readonly data: T[]) {
+    this.length = data.length;
+  }
 
   filter(f: (t: T) => boolean): ImmutableSet<T> {
     return new ImmutableSet(this.data.filter(f));

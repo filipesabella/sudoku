@@ -96,7 +96,7 @@ function boardContainer(game: Game): HTMLElement {
       cellContainer.classList.add('invalid');
     }
 
-    if (cell.selected) {
+    if (cell.selected || cell.placeholders?.length === 1) {
       cellContainer.classList.add('selected');
     }
 

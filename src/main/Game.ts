@@ -8,6 +8,10 @@ const validNumbers: ValidNumber[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 export class Game {
   static newGame(cells: Cell[], difficulty: number): Game {
     const cellsWithPlaceholdes = cells.map(cell => {
+      if (cell.revealed) {
+        return cell;
+      }
+
       const neighbours = new Set(cells
         .filter(c => cell !== c
           && c.revealed && c.realValue
